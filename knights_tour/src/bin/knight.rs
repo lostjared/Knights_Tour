@@ -29,6 +29,7 @@ fn main() -> Result<(), String> {
     }
     let mut mx = MXWindowBuilder::new()
         .create("Knights Tour", width, height)
+        .set_icon("./data/knight.bmp")
         .build()?;
     let ttf_context = sdl2::ttf::init().map_err(|e| e.to_string())?;
     let font = ttf_context.load_font("./data/font.ttf", 18)?;
