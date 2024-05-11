@@ -86,7 +86,6 @@ fn main() -> Result<(), String> {
         let mut dx = startx;
         let mut dy = starty;
         let mut ion = true;
-
         for row in board.iter() {
             for &cell in row.iter() {
                 let color = if ion {
@@ -95,14 +94,12 @@ fn main() -> Result<(), String> {
                     sdl2::pixels::Color::RGB(255, 0, 0)
                 };
                 ion = !ion;
-
                 if cell == 0 {
                     canvas.set_draw_color(color);
                     canvas
                         .fill_rect(sdl2::rect::Rect::new(dx, dy, 50, 50))
                         .expect("on drawing rectangle for grid");
                 }
-
                 dx += 55;
                 if dx >= startx + 8 * 55 {
                     dx = startx;
