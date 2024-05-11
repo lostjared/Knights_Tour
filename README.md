@@ -55,11 +55,6 @@ cargo run --release
 - **clearboard**: Clears the board for a new tour.
 - **nextmove**: Calculates the knight's next move using Warnsdorff's rule.
 
-## File Structure
-
-- `src/main.rs`: The main file containing the simulation logic.
-- `data/`: Directory containing required assets such as fonts and images.
-
 ## Assets
 
 - `data/font.ttf`: The font used for rendering text.
