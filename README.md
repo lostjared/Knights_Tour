@@ -63,7 +63,6 @@ cargo run --release
 ## Assets
 
 - `data/font.ttf`: The font used for rendering text.
-- `data/logo.bmp`: The logo image displayed in the window.
 - `data/knight.bmp`: The knight image used for the simulation.
 
 ## Contributing
