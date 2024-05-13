@@ -1,4 +1,4 @@
-// Knights_Tour v1.1 - Solved from any square
+// Knights_Tour v1.1 - Solved from Multiple squares
 
 use knights_tour::mxr::*;
 use sdl2::event::Event;
