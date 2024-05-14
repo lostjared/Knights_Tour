@@ -183,7 +183,7 @@ fn main() -> Result<(), String> {
             }
         }
 
-        if let Some(index) = min_degree_index {
+        if let Some(_index) = min_degree_index {
             board[next_pos.row as usize][next_pos.col as usize] = move_count;
             move_sequence.push(next_pos);
             if solve_knights_tour(
