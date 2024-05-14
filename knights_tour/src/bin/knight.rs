@@ -1,9 +1,9 @@
 // Knights_Tour v1.1 - Solved from Multiple squares
 
 use knights_tour::mxr::*;
+use rand::Rng;
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
-use rand::Rng;
 
 const BOARD_SIZE: usize = 8;
 
@@ -128,28 +128,47 @@ fn main() -> Result<(), String> {
     }
 
     fn is_valid_move(board: &[[i32; BOARD_SIZE]; BOARD_SIZE], pos: Position) -> bool {
-        pos.row >= 0 && pos.row < BOARD_SIZE as i32 && pos.col >= 0 && pos.col < BOARD_SIZE as i32 && board[pos.row as usize][pos.col as usize] == 0
+        pos.row >= 0
+            && pos.row < BOARD_SIZE as i32
+            && pos.col >= 0
+            && pos.col < BOARD_SIZE as i32
+            && board[pos.row as usize][pos.col as usize] == 0
     }
 
-    fn get_degree(board: &[[i32; BOARD_SIZE]; BOARD_SIZE], pos: Position, horizontal: &[i32; 8], vertical: &[i32; 8]) -> i32 {
+    fn get_degree(
+        board: &[[i32; BOARD_SIZE]; BOARD_SIZE],
+        pos: Position,
+        horizontal: &[i32; 8],
+        vertical: &[i32; 8],
+    ) -> i32 {
         let mut count = 0;
         for i in 0..8 {
             let new_row = pos.row + horizontal[i];
             let new_col = pos.col + vertical[i];
-            if (0..BOARD_SIZE as i32).contains(&new_row) && (0..BOARD_SIZE as i32).contains(&new_col) && board[new_row as usize][new_col as usize] == 0 {
+            if (0..BOARD_SIZE as i32).contains(&new_row)
+                && (0..BOARD_SIZE as i32).contains(&new_col)
+                && board[new_row as usize][new_col as usize] == 0
+            {
                 count += 1;
             }
         }
         count
     }
 
-    fn solve_knights_tour(board: &mut [[i32; BOARD_SIZE]; BOARD_SIZE], pos: Position, move_count: i32, horizontal: &[i32; 8], vertical: &[i32; 8], move_sequence: &mut Vec<Position>) -> bool {
+    fn solve_knights_tour(
+        board: &mut [[i32; BOARD_SIZE]; BOARD_SIZE],
+        pos: Position,
+        move_count: i32,
+        horizontal: &[i32; 8],
+        vertical: &[i32; 8],
+        move_sequence: &mut Vec<Position>,
+    ) -> bool {
         if move_count == (BOARD_SIZE * BOARD_SIZE) as i32 + 1 {
             return true;
         }
 
         let mut min_degree_index: Option<usize> = None;
-        let mut min_degree = 9; 
+        let mut min_degree = 9;
         let mut next_pos = Position::new(-1, -1);
 
         for i in 0..8 {
@@ -167,11 +186,18 @@ fn main() -> Result<(), String> {
         if let Some(index) = min_degree_index {
             board[next_pos.row as usize][next_pos.col as usize] = move_count;
             move_sequence.push(next_pos);
-            if solve_knights_tour(board, next_pos, move_count + 1, horizontal, vertical, move_sequence) {
+            if solve_knights_tour(
+                board,
+                next_pos,
+                move_count + 1,
+                horizontal,
+                vertical,
+                move_sequence,
+            ) {
                 return true;
             } else {
                 println!("Backtracking from: {:?}", next_pos);
-                board[next_pos.row as usize][next_pos.col as usize] = 0; 
+                board[next_pos.row as usize][next_pos.col as usize] = 0;
                 move_sequence.pop();
             }
         }
@@ -188,11 +214,11 @@ fn main() -> Result<(), String> {
     ) {
         if !move_sequence.is_empty() {
             let next_pos = move_sequence.remove(0);
-            board[knight_pos.row as usize][knight_pos.col as usize] = -1; 
+            board[knight_pos.row as usize][knight_pos.col as usize] = -1;
             *knight_pos = next_pos;
-            board[knight_pos.row as usize][knight_pos.col as usize] = *moves; 
+            board[knight_pos.row as usize][knight_pos.col as usize] = *moves;
             *moves += 1;
-            if *moves == 65 {  
+            if *moves == 65 {
                 *tour_over = true;
             }
         }
@@ -217,9 +243,16 @@ fn main() -> Result<(), String> {
     }
 
     clearboard(&mut board);
-    board[knight_pos.row as usize][knight_pos.col as usize] = 1; 
+    board[knight_pos.row as usize][knight_pos.col as usize] = 1;
     move_sequence.push(knight_pos);
-    let solved = solve_knights_tour(&mut board, knight_pos, 2, &horizontal, &vertical, &mut move_sequence);
+    let solved = solve_knights_tour(
+        &mut board,
+        knight_pos,
+        2,
+        &horizontal,
+        &vertical,
+        &mut move_sequence,
+    );
 
     if !solved {
         println!("Failed to find a solution for the initial position");
@@ -242,7 +275,13 @@ fn main() -> Result<(), String> {
                     ..
                 } => {
                     if !tour_over {
-                        nextmove(&mut board, &mut move_sequence, &mut knight_pos, &mut moves, &mut tour_over);
+                        nextmove(
+                            &mut board,
+                            &mut move_sequence,
+                            &mut knight_pos,
+                            &mut moves,
+                            &mut tour_over,
+                        );
                         println!("Moved to: {:?}", knight_pos);
                         println!("Remaining moves: {}", move_sequence.len());
                     }
@@ -253,7 +292,14 @@ fn main() -> Result<(), String> {
                 } => {
                     tour_over = false;
                     moves = 1;
-                    if !reset_tour(&mut board, &mut move_sequence, &mut knight_pos, &horizontal, &vertical, &mut rng) {
+                    if !reset_tour(
+                        &mut board,
+                        &mut move_sequence,
+                        &mut knight_pos,
+                        &horizontal,
+                        &vertical,
+                        &mut rng,
+                    ) {
                         println!("Failed to find a solution");
                     } else {
                         println!("New Initial Position: {:?}", knight_pos);
