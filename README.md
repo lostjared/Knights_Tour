@@ -41,6 +41,8 @@ cargo build --release
 cargo run --release
 ```
 
+![board2](https://github.com/lostjared/Knights_Tour/blob/main/screens/tour.gif)
+
 ## Usage
 
 - Press `Space` to move the knight to the next position.
